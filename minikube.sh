@@ -36,8 +36,10 @@ chown -R $USER $HOME/.kube $HOME/.minikube
 #systemctl stop docker
 #iptables --flush
 #iptables -tnat --flush
-#systemctl start kubelet
-#systemctl start docker
+systemctl enable kubelet 
+systemctl start kubelet
+systemctl enable docker
+systemctl start docker
 
 yum install -y wget
 wget https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx
