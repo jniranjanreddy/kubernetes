@@ -11,7 +11,7 @@ gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 EOF
 
-yum install -y docker-ce-18.06.1.ce-3.el7.x86_64   && sudo systemctl start docker   && sudo systemctl status docker   && sudo systemctl enable docker
+yum install -y docker-ce   && sudo systemctl start docker   && sudo systemctl status docker   && sudo systemctl enable docker
 docker ps
 docker search hello
 
