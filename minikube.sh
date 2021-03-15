@@ -44,3 +44,9 @@ wget https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx
 wget https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens
 chmod +x kubectx kubens
 sudo mv kubens kubectx /usr/local/bin
+
+# Enable Ingress
+minikube addons enable ingress
+
+# Enable metric Server
+minikube addons enable metrics-server
