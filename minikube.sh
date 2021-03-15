@@ -1,5 +1,6 @@
 #!/bin/bash
 #Step-1
+#This should run fine, if VM is running in VirtualBox.
 #Source - https://vocon-it.com/2018/11/19/single-node-kubernetes-cluster-1-installing-minikube-on-centos/
 
 cat << EOF > /etc/yum.repos.d/docker.repo
@@ -30,8 +31,8 @@ yum install -y conntrack
 minikube start --vm-driver=none
 chown -R $USER $HOME/.kube $HOME/.minikube
 
+###########IF coredns failes to start then try below commands############
 #systemctl stop firewalld
-#IF codednsfailes try below commands
 #systemctl stop kubelet
 #systemctl stop docker
 #iptables --flush
