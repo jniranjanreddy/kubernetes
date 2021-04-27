@@ -3,7 +3,7 @@
 #This should run fine, if VM is running in VirtualBox.
 #Source - https://vocon-it.com/2018/11/19/single-node-kubernetes-cluster-1-installing-minikube-on-centos/
 
-cat << EOF > /etc/yum.repos.d/docker.repo
+tee /etc/yum.repos.d/docker.repo <<-'EOF' 
 [docker-ce-edge]
 name=Docker CE Edge - $basearch
 baseurl=https://download.docker.com/linux/centos/7/$basearch/edge
