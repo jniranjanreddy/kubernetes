@@ -1,0 +1,75 @@
+kubernets labs by Linux academy
+
+Kubernetes installation
+------------------------
+cloud_user@ip-10-0-1-102:~$ cat /etc/issue
+Ubuntu 18.04.2 LTS \n \l
+
+##Running on all nodes
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) \
+stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu
+sudo apt-mark hold docker-ce
+
+
+##checking if the Docker up is running or not
+sudo systemctl status docker
+
+
+##Install Kubeadm, Kubelet, and Kubectl on all three nodes.
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubelet=1.12.7-00 kubeadm=1.12.7-00 kubectl=1.12.7-00
+sudo apt-mark hold kubelet kubeadm kubectl
+
+
+##Running only master node
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+Notes: Get the kubeadm join command
+
+
+##Join the two Kube worker nodes to the cluster.
+sudo kubeadm join $some_ip:6443 --token $some_token --discovery-token-ca-cert-hash $some_hash
+
+##Running command on master
+kubectl get nodes
+
+Notes:
+This will no show any worker nodes running
+
+
+AME            STATUS     ROLES    AGE   VERSION
+ip-10-0-1-101   NotReady   master   30s   v1.12.2
+ip-10-0-1-102   NotReady   <none>   8s    v1.12.2
+ip-10-0-1-103   NotReady   <none>   5s    v1.12.2
+
+
+##Setting up of networking using flannel--on all 3 nodes
+echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+##Setting up of flannel ---only on master
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+
+
+##Verifying the node status on master----only on master
+NAME            STATUS   ROLES    AGE   VERSION
+ip-10-0-1-101   Ready    master   85s   v1.12.2
+ip-10-0-1-102   Ready    <none>   63s   v1.12.2
+ip-10-0-1-103   Ready    <none>   60s   v1.12.

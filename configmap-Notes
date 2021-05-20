@@ -1,0 +1,55 @@
+configmaps
+
+How to do custom configration for images and make it portable 
+config maps are object which allows you to decouple pods and componets as a result it keeps the container portable and easy to change the configration 
+stores the data in the KV pair
+      configrations files
+      command line args
+      ENV variables
+
+config maps are idle solution to handle non-senstive data
+
+
+  Create config maps
+  kubectl create configmaps <mapname> <data-source>
+
+  data-source::  --from-file
+  key value pair --from-literal
+
+
+#Creating the config map using the literal
+kubectl configmap special-config --from-literal=special.how=very
+key is the special.how
+value is very
+
+#To get the config maps
+kubectl get configmaps
+
+#To print the  config map in the yaml format
+kubectl get configmaps <name of the config-map> -o yaml
+
+
+#To see the configmap information using the describe method
+kubectl describe configmap <configmap>
+
+
+Method1
+#Create configmaps data using file method
+step1:
+kubectl create configmap nginx-configmap-vol --from-file=file1.txt --from-file=file2.txt
+
+step2:
+Create a config and mention the volume part 
+
+
+
+Method2
+Using the literal method
+kubectl create co
+
+#cleanup
+#To delete the configmaps
+kubectl delete configmaps <configmap1> 
+
+#To delete the pods
+kubectl delete pods <configmap1>

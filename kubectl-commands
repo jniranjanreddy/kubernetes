@@ -1,0 +1,70 @@
+kubectl
+1.How can you manage kubernetes objects(pods/service/deployments) from command line.
+kubectl is a command line utility for running commands against kubernetes cluster.
+
+kubectl is also called kube control or kube command line tool
+
+syntax 
+kubectl [command] [TYPE] [NAME] [FLAGS]
+
+commands: create,get, describe,logs,exec,edit,run,apply,scale.
+Types specify resource : pods ---po
+                         deployments---deploy
+                         replicateset----rs
+                         repplicationcontroller----rc
+                         services.....src
+                         demoset.....ds
+                         namespaces---ns
+                         presistant volume cliam-----pvc
+                         jobs
+                         cronjobs
+
+
+exmaple
+kubetctl get pods nginx-pods -w
+
+#Create a resource from file
+kubectl create -f example.yaml 
+example.yaml is the manifest file it can be json or yaml
+
+#If you have multiple YAML file
+kubectl create -f <directory>
+
+
+#To list the resources
+kubectl get pods 
+kubectl get pods <pod-name>
+kubectl get pods  -o wide ;;; will have node informaton 
+kubectl get pods,deploy
+kubectl get pod nginx-pod -o yml -----to display pod config in yaml
+
+
+#To get the complete details the resources 
+kubectl describe node <node-name>
+kubectl describe pod <pod-name>
+
+kubdectl describe pods # will show all pod information
+
+#To delete the resources
+kubectl delete -f pod.yml : -- To delete the resource by the manigest file
+kubectl delete pods,services -l name=<label name>
+
+
+#To delete all the resources
+kubectl deletes pods --all
+
+
+Kubectl exec logs
+-----------------
+
+#To get a commmand agaist a container in a pod
+kubectl exec <pod-name> date
+
+kubectl exec <podname> -c <comtainer name> date
+kubectl exec -it <pod- name> /bin/bash
+
+
+
+To get logs
+kubectl logs <pod-name>
+kubectl logs -f <pod- name>

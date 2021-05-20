@@ -1,0 +1,130 @@
+Kubernetes deployment and services
+-------------------------------------
+
+Deploymets are kind of object in kubernetes,that provide a way to organize your pods.
+Think for running multiple pods.
+
+Deployments always make the cluster a desired state,cluster constantly work to maintains the desired state.
+
+###Feature of deployments
+
+1.Scaling
+With Deployments ,you can specify the number of replicas you want to create/remove pods to meet that number of replicas
+
+2.Rolling Update
+This deployment will gradually replace the existing containers with new version.
+This will gradually replace and remove the pods. 
+
+3.Self healing 
+if one of the pod goes down accidently,deployment will immediatly spin up a new one to replace it.
+
+
+
+##Method1
+kubectl run my-httpd --image=httpd --replica=1 --port=80
+
+kubectl get pods -o wide
+This wil show on which pods the above image is running.
+
+Now to get into the Node and curl the IP of the pod
+
+
+
+
+##Method2
+Using YAML method
+###Create a deployment with 4 replicas
+cloud_user@ip-10-0-1-101:~$ cat << EOF | kubectl apply -f -
+> apiVersion: apps/v1
+> kind: Deployment
+> metadata:
+>   name: store-products
+>   labels:
+>     app: store-products
+> spec:
+>   replicas: 4
+>   selector:
+>     matchLabels:
+>       app: store-products
+>   template:
+>     metadata:
+>       labels:
+>         app: store-products
+>     spec:
+>       containers:
+>       - name: store-products
+>         image: linuxacademycontent/store-products:1.0.0
+>         ports:
+>         - containerPort: 80
+> EOF
+deployment.apps/store-products created
+cloud_user@ip-10-0-1-101:~$
+cloud_user@ip-10-0-1-101:~$ kubectl get deployments
+NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+store-products   4         4         4            4           11s
+cloud_user@ip-10-0-1-101:~$
+
+
+cloud_user@ip-10-0-1-101:~$ cat << EOF | kubectl apply -f -
+> kind: Service
+> apiVersion: v1
+> metadata:
+>   name: store-products
+> spec:
+>   selector:
+>     app: store-products
+>   ports:
+>   - protocol: TCP
+>     port: 80
+>     targetPort: 80
+> EOF
+service/store-products created
+cloud_user@ip-10-0-1-101:~$
+cloud_user@ip-10-0-1-101:~$ kubectl get svc store-products
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+store-products   ClusterIP   10.107.126.252   <none>        80/TCP    16s
+cloud_user@ip-10-0-1-101:~$
+cloud_user@ip-10-0-1-101:~$
+cloud_user@ip-10-0-1-101:~$ kubectl exec busybox -- curl -s store-products
+{
+        "Products":[
+                {
+                        "Name":"Apple",
+                        "Price":1000.00,
+                },
+                {
+                        "Name":"Banana",
+                        "Price":5.00,
+                },
+                {
+                        "Name":"Orange",
+                        "Price":1.00,
+                },
+                {
+                        "Name":"Pear",
+                        "Price":0.50,
+                }
+        ]
+}cloud_user@ip-10-0-1-101:~$
+
+
+
+
+##service
+Service is an end point,that exposes the port outside world maps the container port
+
+##kubectl expose deployment my-httpd --port=8080 --target-port=80 --type=LoadBalancer
+This will generate a random port
+
+In Kmaster
+curl http://localhost:randomport
+
+
+##kubectl get service
+
+Using the curl:<worker_node:newport> can be accessed from any machines in network
+
+
+##To remove the deployment
+kubectl delete deploy <name of the deployment>
+kubectl delete svc <name of the deployment>

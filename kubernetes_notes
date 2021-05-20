@@ -1,0 +1,629 @@
+Kubernetes installtion
+
+--Installing the 3 components in Master node
+
+Kudeadm: This tool which automates a large portion of the process of setting up of the cluster.
+It makes job easier.
+Kubelet
+The essential component of kubernetes that handles running container on a node.
+kubectl
+command line tool for interacting with cluster It is up
+we will use this to manage the cluster.
+
+
+--Componets in the master node
+Network: Resposible for IP managment
+etcd: KV store for kubernets objects
+Kuberntes confiugres all its config of nodes and object in ETCD
+
+kublet: runs on all the nodes
+ 
+
+Minikube
+1 master and 1 worker
+
+Setups
+1M 2W
+
+Master_Node_installtion_componets: kublet DNS network kubectl and kubeadm
+Worker nodes_installation components: kublet kubletctl kubeadm
+
+--In ALL the 3 server
+setenforce 0  -in all the servers
+modprobe br_netfilter----this allow master---worker
+echo "1" > /proc/sys/net/bridge/bridge-nf-calls-iptables
+swapoff -a 
+Install the yum-utils device-mapper-persistent-data lvm2
+include docker-ce repo
+yum install docker
+Include the kubernetes repo with gpgcheck-0
+yum install -y kubelet kubeadm kubectl
+reboot--all the servers
+Enable the docker kubetcl--systemctl enable/start kubectl and docker
+sed -i 's/cgroup-driver=systemd/cgroup-driver=cgroupfs/g' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+systemctl daemon-reload
+systemctl restart kubelet
+
+--IN master node
+kudeadm init --pod-network-cidr=10.244.0.0/16
+which will say kubernets is sucessfully installed.
+
+configure the network
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+--In the Worker nodes
+During the master init command , it will return a kubeadm join command 
+Execute that in all the servers
+
+--In Master  
+kubectl get nodes
+
+1. Install the docker in all the nodes
+2. Install kubeadm in all the nodes
+3. Intialize the master server
+4. Create a POD network between Master and worker nodes
+5. Join the worker node
+
+ETCD
+The kye value store for the cluster
+ETCD is updated with IP information  
+<<<--------------Need to undestand the fuctionality of the key value pair------------------>>>>>
+
+API server
+API calls
+
+Scheduler
+when a new pod is created,the scheduler determines which node the pod will run on
+This decision is based on many factors,including hardware workloads and affinity
+
+Controller Manager
+a.Node controller
+       Responsible for noticing and responding when nodes go down
+
+b. Replication Controller
+        Responsible for mainitnaing the correct number of pods for every replication contraoller object in the system
+
+c. Endpoint controller 
+Populates the Endpoints object
+
+d. Service Account & Token Controller.
+Creates defaults accounts and API access tokesn for new namespaces
+
+POD creation
+-pod-defination.yml
+4 important and root level properties
+apiversion,kind,metadata,spec
+
+apiVersion: v1
+
+kind: pod/replicaset
+
+metadata: 
+  name: myapp-pod
+  labels:
+    app: myapp   
+    type: front-end 
+
+spec:
+  containers:-------------------contains multiple list
+    - name: nginx_container--item1
+      image: nginx
+
+    - name: redis_conatiner---items2
+      image: redis 
+
+
+Notes:
+Anything under the meta data is dictonary
+
+-To Create pod
+#kubectl create -f pod-defination.yml
+
+- To See the  pod
+#kubectl get pods
+
+- To see more information about the pod
+#kubectl describe pods
+
+<<<<--Understand what is meant by the name space--------------->>>
+Defaults names spaces in the node--Executed in the worker node
+kubectl get namespaces
+default,kube-pulic, kube-system
+
+To Create a name space
+kubectl create namespace <podexample>
+
+
+Networking in Kubernetes
+#Flannel
+Flannel runs a small single binary agent called flanned  on each host and its responsible for allocating subnet lease to each host.
+Flannel users either the Kubernetes API or etcd directly to store 
+the network configration
+the allocated subnets
+and any Auxillary data 
+
+
+Networking and IP address mangement is provided by the network plugin called CNI plugin or a Kubelet plugin
+The Network plugin configures the IPtables on the nodes to setup routing that allow communication between pods and nodes as wells as pods and other nodes in the cluster.
+
+
+Deployments
+All the deployment code must be present in the yml file
+
+#kubectl create -f ./deployment.yml
+
+To get more information
+kubecl
+ 
+
+
+
+
+Kubernetes master componets
+API server
+All the operations done in the kubernets are through API.
+
+Scheduler
+Get the task from master and schedules to the container
+
+Controller
+Manages resources,storate network
+
+
+
+
+Simple kubernets setup
+Master-node
+1.- Make sure you have kubernetes source.lst for ubuntu xenial
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+apt-get update
+
+
+2.Install docker-io
+kubelet kubeadm kubectl kubernetes-cni(conatiner network interface)
+
+Configure master
+3.kubeadm init --pod-network-cidr=10.244.0.0/16  --apiserver-advertise-address $MASTER_IP --token $TOKEN
+This will geneerate a token
+kudebam -join-- which need to executed in the work
+
+4. Install flannel
+kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml --namespace=kube-system
+kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml --namespace=kube-system
+
+5. Install dashboard
+kubectl create -f https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml --namespace=kube-system
+
+
+ 
+
+ Worker installation
+
+apt-get update && apt-get upgrade -y
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+apt-get update -y
+
+apt-get install -y docker.io
+apt-get install -y  kubelet kubeadm kubectl kubernetes-cni
+
+kubeadm join --token $TOKEN $MASTER_IP
+
+
+--check in Master
+kubernetes get nodes
+you will master and worker
+
+--How to get the Health of the master
+Kubectul get cs
+will show the health of the controller-Manager scheduler and etcd-0
+
+
+--Kubectl cluster-info
+Shows the kubernes master running the IP address
+kubeDNS
+
+--How to access the kubernes locally
+1. Fron the kubernete master node
+/etc/kubernetes/admin.conf ----to --- ~/.kube/config
+kubectl get pods
+
+
+
+
+
+
+
+
+falnnel
+for pods inter communication 
+
+
+
+--Key components of kubernetes
+
+Container 
+Units of packaging
+
+Pods 
+Unit of deploymentt consist of one or more containers
+Group one one of more containers that are always co-located,co-scdeuled and run in shared context.
+
+Containers in the same pod have the same hostname
+
+Each pod is isoloated by 
+		- process ID
+		-  Network Name space
+		- IPC
+
+Alternative to VM with mutiple name spacesh
+
+-Replication controller
+Ensures that a pod or homogenous set of pods are always up and available
+Always maintain desired state of the pods
+if there are excess pods there are killed
+New pods are launched when they fail,get deleted or terminated
+Creating a RC with count 1 ensures that a pod is always availble
+RC and pods are associated though Labels
+
+
+
+-Labels
+Are the Metadata KV for identifcation
+Selectors use Labels for Assosication --use cas like we want to group all the nginx pods and keep it under the 
+Load balancer.
+
+-Services
+"Abstraction to define logical set of pods boud by a policy by to acess them"
+
+Service are exposed  through internal and external endpoints
+Suppots both UDP and TCP
+Services can also point to non-kubernetes endpoints through a Virtual-IP bridge
+More  like to windows of POD
+
+Nodes
+Host machines
+
+Cluster
+
+
+when Deploying a new application 
+a. Create a new name space first
+b. Use the same space for the deployment steps else every thing will be created in default name space which is called kube-system
+
+Get more information about your nginx pod:
+kubectl describe pod nginx
+
+Delete the Pod
+kubectl delete pod nginx
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+kubernetes --udemy srinath challa
+
+1. Monolithic
+self container - packaged & deoloyeted as single unit which is inflexible ,inmovable,un divideable
+tightly coupled.
+
+-3 layers
+presentation layer:- UI(HTML,CSS)
+Application layer- JAVA
+Data layer: - Database(MySQL,Mongo,redis)
+
+
+Disadvantages
+1. Often very large
+2.
+
+Microservice
+software techinique where "creating smaller and multiple componets services whic are build to handled a very specific concern.
+multiple services makeup application.
+
+charactertics:
+1.Autonomous
+means its developed,deployed and sacled without affecting other componets
+
+if another service required info/data from another service it first needs to establish a communication protocool
+eithere http or MQ
+
+2.Specilized.
+
+Advanatages:
+we can scale one component independltly :- flexible scaling.
+Easy Deployment:- quicker and no dependency 
+Technical freedom(Any programming language can be used)
+Reusable code(A service written for one component can be used as step for another code)
+Resiliance:; -if one of the components fails, it wont affect another componets.
+
+Disadvantages
+spawning
+maintaince : - if the no of the microservices are higher
+Network perforance:- network latency issues.
+
+Where do microservices run
+it runs physical server,VMs and containers.
+
+
+containers
+Google runs its gmail,youtube and search most of the applications inside the container.
+Google runs avg of 2 billions containers/week.
+
+container will package your app and respective dependency and push to repository and run it on any OS.
+
+
+containers Architeture
+containers virtulize at the OS level
+
+Benifits
+very light weight
+Boots up in seconds
+Takes fraction of disk and memory space.
+
+
+Advantages
+1.Portability
+2.Resource efficiency when compare to  VMs
+3. Isolation amoung containers.
+4. Light weight :- creation ,destryoing is quick
+5. Scaling
+
+
+Two popular continer engines
+1. Docker from docker inc.
+2. RKT from coreos
+
+
+Containers/Docker
+
+Docker from two worrds
+Dock : - Dock yard
+worker: - worker
+person working in Dock yard.
+
+Docker written in Google go
+
+Phases in Docker
+
+a.Build: Developer ships the code and build docker image
+b.Ship: Docker provides platform to share the docker images, where you can upload the images and share it
+Docker store: contains images verfied by docker.
+c. Run: Download the image and run the docker image which will create containers.
+
+
+#Docker hub, Docker reposiotries and Docker images.
+Docker hub is more analogous to Google drive
+Docker repository is more equalent to folders in google drive
+Docker images more equalent to files in folders.
+
+Docker hub
+5M download/day
+
+------------------------------------------------------------------------
+Google run average of 2B containers every week.
+a. How are these containers created and managed at such a large scale.
+b. How do all these containers connect and communicate.
+c. How do you scale these containers as per the traffic demand.
+
+
+Container orchestration Engine(COE)
+
+problems without COE,
+1.container are more limited to one single instance--no clustering
+2.scaliabity is issue 
+
+scale in and out is not easy with docker enginer thats y we need a tool for that.
+
+
+COE Automates,deploying,scaling and managing containezed applications on a group of servers.
+some of the popular are 
+1. Docker swarm
+2. kubernetes 
+3. Apache Mesos.
+
+
+
+Clustering :- clustering opens up to Fault tolrence and Scalability.
+
+scheduling: - schedule the apps to specific worker nodes where we have ssd
+what we need to do is define the requirement and pass on to docker engine and docker engine will do rest of the work of deployment
+
+Scaling :- we are able to increase and decrease app instance as per the traffic demand(Adding/Removing the woker nodes)
+
+Load Balancing: - Load Balances traffic between the nodes
+
+Fault tolerance :- what if the container goes down,monitoring process wil report recreate/re provision the container
+
+Deployment :- Rolling update to node will no down time.
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+Top 3 container orhestration Engines.
+1. Marathon Apache Mesos
+2. Docker swarm
+3. Kubernetes
+
+Typical users Marthaon
+- Large enterprises
+- which requires lot of compute such as Big data
+
+
+#Docker swarm
+written as Go lang
+Easy to understand and get started
+simple architecture than  Kubernetes and Mesos
+
+Typical users of Docker swarm 
+smaller and medium size companies
+
+#Kubernetes
+More Mature COE
+From google donated to CNCF(cloud native foundataion)
+
+
+#Cloud specific container services.
+
+Google Kubernetes Engines(GKE)
+ec2 conatiner service
+Azure container services
+
+
+#Choosing the orchestrator
+Marthon and Kuberntes for large size company
+Rancher and Docker swarm is for medium size company 
+Nomad is for clustering and scheduling
+
+-------------------------------------------------------------------------------------------------------------------
+What is kubernetes(K8s)
+k8s : - firstletter and counts and last ltter
+which is build in google go, which supports Docker an RKT based containers.
+
+ open source COE manager containers @large scale
+ cluster management | scheduling | service discovery | secret management  & more.
+
+Google built it and donated to CNCF
+Runs Gmail, youtube and runs on containers.
+
+Borg : - propritery container manager of google
+Kubernetes a slim down version of Borg.
+
+
+use case: Pokemon became famous in 2016 and with 1x users due to high demand ,it scaled to 50x within short period of time and could't handle traffic with their method
+They approched google and with help of kubernetes they are able to scal
+
+
+
+
+------------------------------------------------------------------------------------------------------
+
+#Kuberbetes Architeture 
+Architeture 
+one Master and one more worker nodes.
+
+In reality kubernetes can have more than 1 master node and can have 100 worker nodes
+Kubernetes supports upto 5k worker nodes in single cluster
+
+
+worker nodes(ealier name is Minions)
+Can be physical machines,VMs or in cloud,All the nodes work together to form fault tolrence and clustering.
+
+POD
+contains one or more containers.
+Each pod will have unique IP address.
+
+containers
+provide run time for containerized applicaton
+containers are desigined to run Micro services
+
+
+Master
+Master is reposible for manging whole cluster
+check health checks of nodes | scaling | scheduling |provisioing | controlling exposing to clients
+when worker nodes fails , it moves the work load from failed to healthy node 
+
+
+
+4 componets with kubernets master
+a.API server
+Its kind of Gate keeper for entire cluster,in case if you can to create,delete,destroy kubernes object it has to throught API server.
+
+kubectl intercts with Master using API component
+
+b. Scheduler
+Schedles the pods in the cluster.
+
+
+c. Control Manager
+      health of cluster,correct number of pods are running,correct number of pods are running in the spec file
+
+d. ETCD
+        Distributed KV database designed by the Core OS
+        Central store to check the current cluster state.
+
+
+
+Worker node
+worker node need either docker engine/ RCT to hosts the containers.
+They require two packages for communication with master
+Kubelet :- Node Agent in worker node
+Ensure containers are running and healthy, if kublet finds any issue with pods,it tries to restart the pod.
+In case of the node, Master launches pods in another worker node.
+
+Kube-proxy:- Responsible for network configration
+core networking componets
+--------------------------------------------------------------------------------------------------------------------------------
+
+Installation method of Kubernetes
+----------------------------------
+
+
+#multiple ways of installing kubernetes
+https://labs.play-with-k8s.com
+minikub  : - single node as master/worker node
+kubeadm: - multi node kubernetes
+
+
+play with kubernetes
+- no  software applications are required and its a 4 hours session online(max time)
+
+1.kubeadm init --apiserver-advertise-address $(hostname -i)
+
+
+ kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+
+
+
+In kubernets nodes
+     kubeadm join 192.168.0.12:6443 --token e2al63.2viqh28j1k23uyv3 --discovery-token-ca-cert-hash sha256:a80966d0f825be97b5c85050b08d36607f7821bdb008ba47bb2a9bd020f67e01
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Minikibe
+How to install and configure minikube
+
+Minikube is tool to install kubernetes locally
+Minikube contains all the all the componets of the master in single iso image.
+
+1. First install virtualbox
+2. Download the minkube executable
+github.com/kubernetes/minikube/releases
+
+3. kubectl
+Download the kubectl.exe
+
+4.start the Minikube
+minikube.exe start
+
+#kubectl get no
+
+checking the minikube status
+kubernets>minikube status
+
+To check the version od minikube
+>minikube version
+
+
+To deploy apps in kubernetes
+kubectl run kubernetes-bootcamp --image=gcr,,,,,,,,,,,    --port=8080
+
+
+To stop the minikube
+>minikube stop
+
