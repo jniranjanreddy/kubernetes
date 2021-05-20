@@ -1,9 +1,10 @@
 # kubetnetes
-
+```
 How to access kubernets cluster from jumphost.
 I have two minishift running in different VM's and having two files..
 /root/.kube/minikube02-config
 /root/.kube/minikube03-config
+```
 ```
 [root@docswarm01 kubetnetes]# kubectl --kubeconfig=/root/.kube/minikube02-config get pods --all-namespaces
 NAMESPACE       NAME                                              READY   STATUS      RESTARTS   AGE
