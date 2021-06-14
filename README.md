@@ -37,3 +37,15 @@ kube-system     metrics-server-7894db45f8-k6t4n                   1/1     Runnin
 kube-system     storage-provisioner                               1/1     Running     4          22d
 You have new mail in /var/spool/mail/root
 ```
+```
+[root@devkmas01 ~]# k get nodes --show-labels
+NAME                     STATUS   ROLES                  AGE   VERSION   LABELS
+devkmas01.example.com   Ready    control-plane,master   8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkmas01.example.com,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.                           kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
+devkwor01.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor01.example.com,kubernetes.io/os=linux
+devkwor02.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor02.example.com,kubernetes.io/os=linux
+
+
+```
+
+
+
