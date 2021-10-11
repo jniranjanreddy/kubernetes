@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-another-deployment
+  labels:
+    app: http-another-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-another-server
+  template:
+    metadata:
+      labels:
+        app: http-another-server
+    spec:
+      containers:
+      - name: http-another-server
+        image: httpd-v1
+        ports:
+        - containerPort: 80
