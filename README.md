@@ -43,9 +43,21 @@ NAME                     STATUS   ROLES                  AGE   VERSION   LABELS
 devkmas01.example.com   Ready    control-plane,master   8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkmas01.example.com,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.                           kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
 devkwor01.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor01.example.com,kubernetes.io/os=linux
 devkwor02.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor02.example.com,kubernetes.io/os=linux
-
-
 ```
+```
+kubectl create ns dev01 -o yaml --dry-run=client > ns.yml
 
+[root@minikube01 1-assesment]# cat ns.yml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: dev01
+spec: {}
+status: {}
 
+kubectl apply -f ns.yml
+```
+```
+```
 
