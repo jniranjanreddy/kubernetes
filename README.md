@@ -1,4 +1,14 @@
 # kubetnetes
+
+If unable to delete Namespace, then try below.
+```
+NAMESPACE=ingress-nginx
+kubectl proxy &
+kubectl get namespace $NAMESPACE -o json |jq '.spec = {"finalizers":[]}' >temp.json
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
+
+```
+
 ```
 How to access kubernets cluster from jumphost.
 I have two minishift running in different VM's and having two files..
@@ -43,9 +53,21 @@ NAME                     STATUS   ROLES                  AGE   VERSION   LABELS
 devkmas01.example.com   Ready    control-plane,master   8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkmas01.example.com,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.                           kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
 devkwor01.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor01.example.com,kubernetes.io/os=linux
 devkwor02.example.com   Ready    <none>                 8d    v1.21.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubern                           etes.io/arch=amd64,kubernetes.io/hostname=devkwor02.example.com,kubernetes.io/os=linux
-
-
 ```
+```
+kubectl create ns dev01 -o yaml --dry-run=client > ns.yml
 
+[root@minikube01 1-assesment]# cat ns.yml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: dev01
+spec: {}
+status: {}
 
+kubectl apply -f ns.yml
+```
+```
+```
 
