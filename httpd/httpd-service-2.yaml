@@ -4,7 +4,7 @@ metadata:
   name: httpd-service-2
 spec: 
   selector: 
-    app: http-server
+    app: http-server-2
   ports: 
     - protocol: TCP
       port: 8082

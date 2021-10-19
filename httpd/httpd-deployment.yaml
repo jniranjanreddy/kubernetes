@@ -5,11 +5,7 @@ metadata:
   labels:
     app: http-server
 spec:
-<<<<<<< HEAD
   replicas: 3
-=======
-  replicas: 1
->>>>>>> 0e69ddfc8cb3d4ab0ba6e0def4446a098b1a94cc
   selector:
     matchLabels:
       app: http-server
@@ -20,10 +16,6 @@ spec:
     spec:
       containers:
       - name: http-server
-<<<<<<< HEAD
-        image: httpd:latest
-=======
         image: httpd
->>>>>>> 0e69ddfc8cb3d4ab0ba6e0def4446a098b1a94cc
         ports:
         - containerPort: 80

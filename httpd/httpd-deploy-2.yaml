@@ -4,19 +4,19 @@ metadata:
   name: httpd-deploy-2
   labels:
     environment: dev
-    app: http-server
+    app: http-server-2
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: http-server
+      app: http-server-2
   template:
     metadata:
       labels:
-        app: http-server
+        app: http-server-2
     spec:
       containers:
-      - name: http-server
-        image: httpd:alpine
+      - name: http-server-2
+        image: httpnirulabs
         ports:
         - containerPort: 80
