@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpd-ingress
+spec:
+  rules:
+  - http: 
+      paths:
+      - path: /httpd-service
+        pathType: Prefix
+        backend:
+          service: 
+            name: httpd-service
+            port: 
+              number: 8081
