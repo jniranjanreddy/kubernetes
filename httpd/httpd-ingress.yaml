@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 apiVersion: networking.k8s.io/v1
-=======
-apiVersion: networking.k8s.io/v1beta1
->>>>>>> 0e69ddfc8cb3d4ab0ba6e0def4446a098b1a94cc
 kind: Ingress
 metadata:
   name: httpd-ingress
 spec:
   rules:
-<<<<<<< HEAD
   - http: 
       paths:
       - path: /httpd-service
@@ -18,11 +13,9 @@ spec:
             name: httpd-service
             port: 
               number: 8081
-=======
   - host: httpd.com
     http: 
       paths:
       - backend: 
           serviceName: httpd-service
           servicePort: 8081
->>>>>>> 0e69ddfc8cb3d4ab0ba6e0def4446a098b1a94cc
