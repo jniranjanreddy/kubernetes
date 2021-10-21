@@ -1,21 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: httpd-ingress
+ name: httpd-ingress
+ annotations:
+   nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - http: 
+  - host: devkmas01.nirulabs.com
+    http:
       paths:
       - path: /httpd-service
         pathType: Prefix
         backend:
-          service: 
+          service:
             name: httpd-service
-            port: 
+            port:
               number: 8081
-  - host: httpd.com
-    http: 
-      paths:
-      - backend: 
-          serviceName: httpd-service
-          servicePort: 8081
