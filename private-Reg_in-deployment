@@ -1,0 +1,45 @@
+First need to try local login
+
+root@minikube# cat /root/.docker/config.json
+{
+        "auths": {
+                "packages.jnrlabs.com:50000": {
+                        "auth": "ZG92VyLXBvYzpoeXqdg=="
+                }
+        }
+}
+
+root@minikube# kubectl create secret generic regcred \
+>     --from-file=.dockerconfigjson=/root/.docker/config.json \
+>     --type=kubernetes.io/dockerconfigjson
+secret/regcred created
+
+
+root@minikube# cat deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-server
+  labels:
+    app: httpd-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpd-server
+  template:
+    metadata:
+      labels:
+        app: httpd-server
+    spec:
+      containers:
+      - name: httpd-server
+        image: packages.jnrlabs.com:50000/httpd:latest
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: regcred
+      
+  root@POC-Apps-01 /poc/kubernetes # k apply -f console-deployment.yaml
+deployment.apps/httpd-server created
+
