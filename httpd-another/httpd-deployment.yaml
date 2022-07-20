@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: http-another-server
-        image: httpd-v1
+        image: httpd:2.4
         ports:
         - containerPort: 80
