@@ -1,3 +1,6 @@
+## Ingress Annotations
+Source: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
+
 # Minikube ingress Class
 
 root@dev-server01:~# k --kubeconfig=/etc/kubernetes/admin.conf describe ingressclass
