@@ -1,5 +1,6 @@
-# kubetnetes
+# kubetnetes 
 
+#![alt text](https://github.com/jniranjanreddy/kubernetes/blob/main/aws-ingress-controller.png?raw=true)
 
 ![alt text](https://github.com/jniranjanreddy/kubernetes/blob/main/aws-ingress-controller.png?raw=true)
 
