@@ -1,7 +1,13 @@
-# kubetnetes
+# kubetnetes 
+
+![alt text](https://github.com/jniranjanreddy/kubernetes/blob/main/aws-ingress-controller.png?raw=true)
+
 Kubernetes-SIGs -  Special Interest groups
 
 If unable to delete Namespace, then try below.
+```
+![alt text](https://github.com/jniranjanreddy/kubernetes/blob/main/aws-ingress-controller.png?raw=true)
+```
 ```
 NAMESPACE=ingress-nginx
 kubectl proxy &
