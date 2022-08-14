@@ -1,0 +1,24 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: praveen-pod
+spec:
+  volumes:
+    - name: niranjan-pv
+      persistentVolumeClaim:
+       claimName: niranjan-pvc
+    - name: praveen-pv
+      persistentVolumeClaim:
+       claimName: praveen-pvc
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/tmp/niranjan-mount"
+          name: niranjan-pv
+      volumeMounts:
+        - mountPath: "/tmp/praveen-mount"
+          name: praveen-pv
