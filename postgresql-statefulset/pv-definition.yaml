@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata: 
-  name: pv-postgresql-vol01
+  name: postgres
 spec: 
   accessModes: 
     - ReadWriteOnce
@@ -9,5 +9,5 @@ spec:
     storage: 2Gi
 
   hostPath: 
-    path: /tmp/data
+    path: /var/lib/postgresql/data/pgdata
 
