@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2023-04-01T06:48:47Z"
+  labels:
+    app: docker-registry
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          .: {}
+          f:app: {}
+      f:spec:
+        f:internalTrafficPolicy: {}
+        f:ports:
+          .: {}
+          k:{"port":5000,"protocol":"TCP"}:
+            .: {}
+            f:port: {}
+            f:protocol: {}
+            f:targetPort: {}
+        f:selector: {}
+        f:sessionAffinity: {}
+        f:type: {}
+    manager: kubectl-expose
+    operation: Update
+    time: "2023-04-01T06:48:47Z"
+  name: docker-registry
+  namespace: docker-registry
+  resourceVersion: "18980"
+  uid: 1eb26c65-8a8c-4a5b-b3e7-61f2a9cfd6e6
+spec:
+  clusterIP: 10.98.2.184
+  clusterIPs:
+  - 10.98.2.184
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: docker-registry
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
