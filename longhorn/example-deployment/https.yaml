@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment
+  labels:
+    app: http-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-server
+  template:
+    metadata:
+      labels:
+        app: http-server
+    spec:
+      containers:
+      - name: http-server
+        image: httpd:latest
+        volumeMounts:
+          - name: http-vol01
+            mountPath: /data
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: http-vol01
+          persistentVolumeClaim:
+            claimName: http-vol01-pvc
