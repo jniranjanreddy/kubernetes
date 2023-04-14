@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 1-httpd-nodeport-deployment
+  name: foo-deployment
   labels:
-    app: http-webserver-1
+    app: foo
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: http-webserver-1
+      app: foo
   template:
     metadata:
       labels:
-        app: http-webserver-1
+        app: foo
     spec:
       containers:
-      - name: http-webserver
-        image: nirulabs/httpd-v1:latest
+      - name: foo
+        image: httpd:2.4
         ports:
         - containerPort: 80
