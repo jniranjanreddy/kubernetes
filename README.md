@@ -1,5 +1,24 @@
 # kubetnetes 
 
+
+## Ingress
+```
+three Types of Ingress paths
+1. ImplementationSpecific: With this path type, matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types.
+
+2. Exact: Matches the URL path exactly and with case sensitivity.
+
+3. Prefix: Matches based on a URL path prefix split by /. Matching is case sensitive and done on a path element by element basis. 
+A path element refers to the list of labels in the path split by the / separator. A request is a match for path p if every p is an 
+element-wise prefix of p of the request path.
+
+Note: If the last element of the path is a substring of the last element in request path, it is not a match (
+for example: 
+/foo/bar matches 
+/foo/bar/baz, but does not match /foo/barbaz).
+
+```
+
 ![alt text](https://github.com/jniranjanreddy/kubernetes/blob/main/aws-ingress-controller.png?raw=true)
 
 Kubernetes-SIGs -  Special Interest groups
