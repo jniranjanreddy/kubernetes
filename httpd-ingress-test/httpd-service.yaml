@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: httpd-ingress-service
+spec: 
+  selector: 
+    app: http-ingress-test
+  ports: 
+    - protocol: TCP
+      port: 8082
+      targetPort: 80

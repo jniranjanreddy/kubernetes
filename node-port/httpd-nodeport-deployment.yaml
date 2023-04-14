@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-nodeport-deployment
+  labels:
+    app: http-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-webserver
+  template:
+    metadata:
+      labels:
+        app: http-webserver
+    spec:
+      containers:
+      - name: http-webserver
+        image: httpd:2.4
+        ports:
+        - containerPort: 80

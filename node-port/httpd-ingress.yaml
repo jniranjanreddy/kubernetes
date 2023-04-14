@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nodeport
+spec:
+  rules:
+  - host: "nodeport.example.com"
+    http:
+      paths:
+      - pathType: Prefix
+        #path: "/nodeport"
+        path: "/"
+        backend:
+          service:
+            name: httpd-nodeport-service
+            port:
+              number: 30001

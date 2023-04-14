@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-ingress-deployment
+  labels:
+    app: http-ingress-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-ingress-test
+  template:
+    metadata:
+      labels:
+        app: http-ingress-test
+    spec:
+      containers:
+      - name: http-ingress-test
+        image: httpd-v1:latest
+        ports:
+        - containerPort: 80

@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: jnrlabs-ingress
+spec:
+  ingressClassName: nginx # use only with k8s version >= 1.18.0
+  - hosts:
+    - webapps.jnrlabs.com
+  rules:
+  - host: webapps.jnrlabs.com
+    http:
+      paths:
+      - path: /ingress
+        backend:
+          serviceName: httpd-ingress-service
+          servicePort: 80
