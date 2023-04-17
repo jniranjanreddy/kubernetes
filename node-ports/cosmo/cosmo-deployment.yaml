@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cosmo-deployment
+  labels:
+    app: cosmo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cosmo
+  template:
+    metadata:
+      labels:
+        app: cosmo
+    spec:
+      containers:
+      - name: cosmo
+        image: nirulabs/cosmo:latest
+        ports:
+        - containerPort: 80

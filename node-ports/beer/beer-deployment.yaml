@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beer-deployment
+  labels:
+    app: beer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beer
+  template:
+    metadata:
+      labels:
+        app: beer
+    spec:
+      containers:
+      - name: beer
+        image: nirulabs/beer:latest
+        ports:
+        - containerPort: 80

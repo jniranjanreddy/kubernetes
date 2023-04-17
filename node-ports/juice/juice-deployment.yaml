@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juice-deployment
+  labels:
+    app: juice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: juice
+  template:
+    metadata:
+      labels:
+        app: juice
+    spec:
+      containers:
+      - name: juice
+        image: nirulabs/juice:latest
+        ports:
+        - containerPort: 80

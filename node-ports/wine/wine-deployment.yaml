@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wine-deployment
+  labels:
+    app: wine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wine
+  template:
+    metadata:
+      labels:
+        app: wine
+    spec:
+      containers:
+      - name: wine
+        image: nirulabs/wine:latest
+        ports:
+        - containerPort: 80

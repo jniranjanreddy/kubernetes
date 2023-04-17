@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: coffee-ingress
+spec:
+  rules:
+  - host: coffee.bar.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: coffee-service
+            port:
+              number: 8083
