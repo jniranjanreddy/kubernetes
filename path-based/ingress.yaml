@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+  name: cafe
+  namespace: cafe
+spec:
+  rules:
+  - host: cafe.rlabs.com
+    http:
+      paths:
+      - path: /chai
+        pathType: Prefix
+        backend:
+          service:
+            name: chai-svc
+            port:
+              number: 80
+      - path: /pani
+        pathType: Prefix
+        backend:
+          service:
+            name: pani-svc
+            port:
+              number: 80
+#  tls:
+#    - hosts:
+#        - cafe
+#      secretName: cafe-tls

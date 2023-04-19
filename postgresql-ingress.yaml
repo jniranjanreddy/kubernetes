@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: postgresql-ingress
+spec:
+  rules:
+  - host: postgres.nirulabs.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: postgresql-postgresql-ha-pgpool
+            port:
+              number: 5432
