@@ -5,6 +5,34 @@
 
 
 ```
+
+root@minikube02:/etc# kubens
+cafe
+default
+ingress-nginx
+kube-node-lease
+kube-public
+kube-system
+
+kubectl apply -f dnsutils.yaml
+
+
+root@minikube02:/etc#  k get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+beer-service   NodePort    10.109.71.206    <none>        8085:30006/TCP   62m
+chai-svc       ClusterIP   10.98.211.14     <none>        80/TCP           121m
+pani-svc       ClusterIP   10.110.116.139   <none>        80/TCP           121m
+
+root@minikube02:/etc# k exec -it dnsutils -- curl  http://chai-svc.cafe.svc.cluster.local
+Server address: 172.17.0.5:80
+Server name: chai-dd9ccdf98-cjfts
+Date: 20/Apr/2023:08:21:38 +0000
+URI: /
+Request ID: 41dfa0ab64fbbd54db881db2028da4a4
+root@minikube02:/etc#
+
+
+
 root@minikube02:~/mySpace/kubernetes# kubectl get endpoints kube-dns --namespace=kube-system
 NAME       ENDPOINTS                                     AGE
 kube-dns   172.17.0.2:53,172.17.0.2:53,172.17.0.2:9153   3h16m
