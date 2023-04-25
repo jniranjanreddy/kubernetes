@@ -1,0 +1,46 @@
+## Ingress Annotations
+Source: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
+
+# Minikube ingress Class
+
+root@dev-server01:~# k --kubeconfig=/etc/kubernetes/admin.conf describe ingressclass
+Name:         nginx
+Labels:       app.kubernetes.io/component=controller
+              app.kubernetes.io/instance=ingress-nginx
+              app.kubernetes.io/name=ingress-nginx
+Annotations:  ingressclass.kubernetes.io/is-default-class: true
+Controller:   k8s.io/ingress-nginx
+Events:       <none>
+root@dev-server01:~#
+
+
+#Alb Ingress Class
+root@dev-server01:~# k get ingressclass
+NAME                   CONTROLLER            PARAMETERS                             AGE
+alb                    ingress.k8s.aws/alb   IngressClassParams.elbv2.k8s.aws/alb   20h
+my-aws-ingress-class   ingress.k8s.aws/alb   <none>                                 46m
+
+
+root@dev-server01:~# k describe  ingressclass alb
+Name:         alb
+Labels:       app.kubernetes.io/instance=aws-load-balancer-controller
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/name=aws-load-balancer-controller
+              app.kubernetes.io/version=v2.4.2
+              helm.sh/chart=aws-load-balancer-controller-1.4.2
+Annotations:  meta.helm.sh/release-name: aws-load-balancer-controller
+              meta.helm.sh/release-namespace: kube-system
+Controller:   ingress.k8s.aws/alb
+Parameters:
+  APIGroup:  elbv2.k8s.aws
+  Kind:      IngressClassParams
+  Name:      alb
+Events:      <none>
+
+
+root@dev-server01:~# k describe  ingressclass my-aws-ingress-class
+Name:         my-aws-ingress-class
+Labels:       <none>
+Annotations:  ingressclass.kubernetes.io/is-default-class: true
+Controller:   ingress.k8s.aws/alb
+Events:       <none>

@@ -1,0 +1,97 @@
+pods
+In Virtualization,Basic scheduling unit is VMs
+In container space Basic scheduling unit is container
+In kubernets space Basic scheduling unit is pod
+
+
+Pod
+Atomic unit of scheduling in kubernetes
+
+Pod deployment
+1.First we write a manifest file which contains the container information to API server.
+2.API server and scheduler will device where to deploy these in worker nodes
+
+
+
+Multi container pods
+multi pod container are rare use case where they share name network and namespace,cgroups
+More than one container/pod example supporting task to main job.
+
+
+
+Pod networking
+Every pod has unique IP address and Each container in the pod has unique port,if the pod is having multiple containers,both the container will be have difference IP address
+So each container will be refereced with <POD_IP>:<container_port>
+containers are exposed to outside world using the ports.
+
+
+Interpod communication
+flannel as the pod network plugin which is resonsible for the interpod allocation of POD IP address and pod-pod communication  
+
+Intra pod communication
+How 2 container talks to each other- using shared localhost interface
+
+Life cyce of the pod
+manifest---API server--POD(Pending)--(POD)RUNNING---POD(Successed)
+
+
+Pending: pod will be downloading all the images
+Running:
+failed:- if things didt get happend currently from pending state ,it will move to failed state.
+
+
+
+POD manifiest:
+Container 4 top level fields
+
+#nginx.yaml
+apiversion:
+kind: pod
+metadata
+
+spec:
+
+
+There are some examples:
+pod v1
+Replicationcontroller v1
+service v1
+Replicateset  apps/v1
+Deployment apps/v1
+Daemon apps/v1
+job batch/v1
+
+
+#Example
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+    tier: dev
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+
+
+#To get the yaml configration of the pod(which shows the high level details of the pod)
+kubectl get pod nginx-pod -o yaml
+
+#To get more details of the pod with the events
+kubectl describe pod nginx-pod
+
+#TO check the connectivity from master and pod
+from the master IP
+ping <POD_IP>
+
+Note: POD ip can be optained from the describe command
+
+
+#To get inside the pod
+kubectl exec -it nginx-pod --/bin/bash
+#exit to come out
+
+#To delete the pod
+kubectl delete pod nginx-pod
