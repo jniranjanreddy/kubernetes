@@ -96,4 +96,5 @@ kubectl apply -f ns.yml
 ```
 ```
 ```
+![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/b39e1596-5978-43ed-8fb2-0845117cf672)
 
