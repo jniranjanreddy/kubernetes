@@ -101,7 +101,11 @@ kubectl apply -f ns.yml
 ## CLoud Native Compute Foundation
 ![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/0c99db61-1fe1-4051-9450-1fba43d401af)
 ![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/f04ea0a4-af4b-4e4b-be77-3dbe12d5b8fb)
-
 ![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/117eb95f-d15f-46cb-acbd-c115ea993ca8)
+![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/aa4bfa3a-d4d8-4d8a-b3af-4d22ad28f9e8)
+![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/3fe1924b-58fd-47eb-92f0-c907f00b7ac2)
+![image](https://github.com/jniranjanreddy/kubernetes/assets/83489863/8ef3235b-d0fb-47c6-bc01-ac59de1d3ec2)
+
+
 
 
