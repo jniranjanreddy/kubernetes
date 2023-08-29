@@ -17,10 +17,10 @@ spec:
       volumes:
       - name: nfs-test
         persistentVolumeClaim:
-          claimName: nfs-pvc # same name of pvc that was created
+          claimName: nfs-pvc
       containers:
       - image: nginx
         name: nginx
         volumeMounts:
-        - name: nfs-test # name of volume should match claimName volume
-          mountPath: /usr/share/nginx/html
+        - name: nfs-test
+          mountPath: /usr/share/nginx/html 

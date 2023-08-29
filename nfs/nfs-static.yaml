@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nfs-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+        - name: nfs-static
+          nfs:
+            server: 192.168.9.10  # NFS Server Ip address 
+            path: /conf  # NFS Server share location
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - name: nfs-static # name of volume should match claimName volume
+          mountPath: /static

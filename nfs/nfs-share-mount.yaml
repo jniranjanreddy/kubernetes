@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nfs
+spec:
+  containers:
+    - name: app
+      image: httpd
+      volumeMounts:
+        - name: nfs-volume
+          mountPath: /nfs-conf # Please change the destination you like the share to be mounted too
+  volumes:
+    - name: nfs-volume
+      nfs:
+        server: 192.168.9.10  # NFS Server Ip address 
+        path: /conf  # NFS Server share location

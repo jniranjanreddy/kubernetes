@@ -7,9 +7,14 @@ metadata:
 spec:
   storageClassName: manual # same storage class as pvc
   capacity:
-    storage: 200Mi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
+  persistentVolumeReclaimPolicy:
+  mountOptions:
+    - hard
+    - nfsvers=4.1
   nfs:
     server: 192.168.9.10 # NFS server IP address 
     path: "/static"   # NFS share location 
+    readOnly: false
