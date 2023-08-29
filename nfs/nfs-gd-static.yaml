@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-static
+  name: nfs-gd-static-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-static
+  template:
+    metadata:
+      labels:
+        app: nginx-static
+    spec:
+      volumes:
+        - name: nfs-static
+          nfs:
+            server: 192.168.9.10  # NFS Server Ip address 
+            path: /static  # NFS Server share location
+        - name: nfs-bundles
+          nfs:   
+            server: 192.168.9.10  # NFS Server Ip address 
+            path: /bundles  # NFS Server share location
+        - name: nfs-conf
+          nfs:   
+            server: 192.168.9.10  # NFS Server Ip address 
+            path: /conf  # NFS Server share location
+      containers:
+      - image: nginx
+        name: nginx-static
+        volumeMounts:
+        - name: nfs-static    # name of volume should match claimName volume.
+          mountPath: /static  # Mount point inside the container.
+        - name: nfs-bundles   # name of volume should match claimName volume.
+          mountPath: /bundles # Mount point inside the container.
+        - name: nfs-conf   # name of volume should match claimName volume.
+          mountPath: /conf # Mount point inside the container.
