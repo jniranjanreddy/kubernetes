@@ -12,4 +12,8 @@ root@:/mnt/c/Users//kind-resources# k config set-context kind-milvus-cluster
 Context "kind-milvus-cluster" created.
 root@RXAI-A-PF3WJGL6:/mnt/c/Users/NiranjanJannapureddy/kind-resources# 
 ```
+## get kubeconfig
+```
+export KUBECONFIG="$(kind get kubeconfig --name=learn-istio)"
 
+```
