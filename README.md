@@ -2,6 +2,8 @@
 
 
 ## Ingress
+
+## https://www.youtube.com/watch?v=JoHUi9KvnOA&list=PLdpzxOOAlwvJdsW6A0jCz_3VaANuFMLpc&index=28
 ```
 three Types of Ingress paths
 1. ImplementationSpecific: With this path type, matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types.
