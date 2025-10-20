@@ -1,0 +1,119 @@
+# Example: Self-Signed Certificate for an Application
+
+---
+# Step 1: Create a self-signed ClusterIssuer
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+
+---
+# Step 2: Create a CA Certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-ca
+  namespace: security
+spec:
+  isCA: true
+  commonName: my-ca
+  secretName: my-ca-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+---
+# Step 3: Create a CA Issuer using the CA Certificate
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: my-ca-issuer
+spec:
+  ca:
+    secretName: my-ca-secret
+
+---
+# Step 4: Create an Application Certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: myapp-tls
+  namespace: default
+spec:
+  secretName: myapp-tls
+  duration: 2160h # 90 days
+  renewBefore: 360h # Renew 15 days before expiry
+  subject:
+    organizations:
+      - MyOrganization
+  commonName: myapp.example.com
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - myapp.example.com
+    - myapp.default.svc.cluster.local
+    - myapp.default.svc
+  issuerRef:
+    name: my-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+---
+# Step 5: Use the certificate in a deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 443
+        volumeMounts:
+        - name: tls
+          mountPath: /etc/nginx/ssl
+          readOnly: true
+      volumes:
+      - name: tls
+        secret:
+          secretName: myapp-tls
+
+---
+# Step 6: Expose the service with TLS
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: default
+spec:
+  selector:
+    app: myapp
+  ports:
+  - name: https
+    port: 443
+    targetPort: 443
+  type: ClusterIP
+
