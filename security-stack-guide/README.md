@@ -1,4 +1,5 @@
 # Security Stack: Cert-Manager + Vault
+# if vault pods failing to start, remove cluster-keys.json file.
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -751,4 +752,5 @@ Both components work independently but complement each other:
 - **Vault** handles secrets (passwords, API keys, tokens)
 
 Together they provide a complete security infrastructure for your Kubernetes cluster.
+
 
