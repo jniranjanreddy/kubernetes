@@ -4,6 +4,26 @@
      https://www.youtube.com/watch?v=F-skxSQf4Jw
      https://github.com/marcel-dempers/docker-development-youtube-series/tree/master/kubernetes/servicemesh/istio
      ## https://github.com/marcel-dempers/docker-development-youtube-series/tree/master/kubernetes/servicemesh/istio
+
+
+
+## https://imesh.ai/blog/what-are-istio-virtual-services-and-destination-rules/
+
+
+```
+This is where the open-source Istio service mesh comes in. Istio provides 5 traffic management API resources to handle traffic from the edge and also between service subsets:
+
+Virtual services
+Destination rules
+Gateways
+Service entries
+Sidecars
+
+Istio uses Envoy proxy as its data plane. Envoy proxy runs as a sidecar container with each application pod and intercepts the traffic going in and out of the pod.
+
+
+```
+
 ```
 <img width="802" height="267" alt="image" src="https://github.com/user-attachments/assets/5f60d689-e54e-4bd8-8caa-d36bca2a1a60" />
 
