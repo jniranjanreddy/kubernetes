@@ -28,3 +28,19 @@ Istio uses Envoy proxy as its data plane. Envoy proxy runs as a sidecar containe
 <img width="802" height="267" alt="image" src="https://github.com/user-attachments/assets/5f60d689-e54e-4bd8-8caa-d36bca2a1a60" />
 
 <img width="910" height="311" alt="image" src="https://github.com/user-attachments/assets/e44f26a5-21a4-4bb0-b276-09c57bf636c7" />
+
+
+```
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.*
+export PATH=$PWD/bin:$PATH
+
+
+istioctl install --set profile=demo -y
+
+kubectl label namespace default istio-injection=enabled
+
+
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+```
