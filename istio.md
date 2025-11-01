@@ -30,6 +30,12 @@ Istio uses Envoy proxy as its data plane. Envoy proxy runs as a sidecar containe
 <img width="910" height="311" alt="image" src="https://github.com/user-attachments/assets/e44f26a5-21a4-4bb0-b276-09c57bf636c7" />
 
 
+## Metal LB for Minikube
+```
+minikube addons enable metallb
+minikube ip
+```
+
 ```
 curl -L https://istio.io/downloadIstio | sh -
 cd istio-1.*
