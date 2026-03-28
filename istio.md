@@ -1,4 +1,5 @@
 ## istio
+## https://imesh.ai/blog/what-are-istio-virtual-services-and-destination-rules/
 ```
      https://www.youtube.com/watch?v=A9cG1QnmrFU
      https://www.youtube.com/watch?v=F-skxSQf4Jw
