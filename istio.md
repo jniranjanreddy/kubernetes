@@ -42,13 +42,17 @@ minikube ip
 curl -L https://istio.io/downloadIstio | sh -
 cd istio-1.*
 export PATH=$PWD/bin:$PATH
-
-
 istioctl install --set profile=demo -y
 
 kubectl label namespace default istio-injection=enabled
 
 
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+```
+## Specific version of istio
+
+```
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.0 sh -
 
 ```
