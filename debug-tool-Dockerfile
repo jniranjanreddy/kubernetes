@@ -30,3 +30,13 @@ RUN mkdir -p /usr/share/keyrings && \
     rm -rf /var/lib/apt/lists/*
 
 CMD ["sleep", "infinity"]
+
+
+############################################################
+# docker build -t k8s-net-debug:1.1 .
+# docker run --rm k8s-net-debug:1.1 python --version
+# docker run --rm k8s-net-debug:1.1 psql --version
+# docker run --rm k8s-net-debug:1.1 mongosh --version
+
+# kubectl run multitool --rm -it   --image=qacdrxacr.azurecr.io/debug-pod:v1  --restart=Never -- python --version
+############################################################
