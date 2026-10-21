@@ -87,3 +87,7 @@ for python
 kubectl exec -n debug debug-pod -- sh -c "nohup python -u  /work/scripts/hello.py data.csv  > /work/script.log 2>&1 < /dev/null &"
 
 ```
+## attach dbug pod to existing pod
+```
+kubectl debug -it api-portal-6b8758f87f-9khkbxrz --image=nicolaka/netshoot --target=api-portal --profile=netadmin
+```
